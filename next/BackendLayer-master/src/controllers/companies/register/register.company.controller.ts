@@ -1,6 +1,6 @@
 import { Controller, Post, Headers, Body } from '@nestjs/common';
 import { CompnayService } from '../company.service';
-import {  CreateCompanyDto } from './register.company.dto';
+import { CreateCompanyDto } from './register.company.dto';
 
 import { UsersService } from '../../users/users.service';
 import { UserInterface } from '../../users/user.interface';
@@ -28,24 +28,25 @@ export class CreateCompnayController {
       return { error: true, code: 201 };
     }
 
-    const rideDate: Date = new Date(createRideDto.when);
-
-    if (isNaN(rideDate.getTime()) === true) {
-      return { error: true, code: 202 };
-    }
+    //const rideDate: Date = new Date(createRideDto.when);
+    const CompanyName = new this.userModel(createRideDto);
+    //const alreadyExistingUser = await this.getUserByU(createUserDto.username);
+   // if (isNaN(rideDate.getTime()) === true) {
+     // return { error: true, code: 202 };
+    //}
 
     const ride: CompanyInterface = await this.rideService.create(
       createRideDto,
       exhibitor.username,
-      rideDate,
+      CompanyName,
     );
 
-    const rideId: number = ride.ride_id;
+    //const rideId: number = ride.ride_id;
 
-    exhibitor.rides.push(ride);
+    //exhibitor.rides.push(ride);
 
-    await this.userService.updateUsersRides(exhibitor.session, exhibitor.rides);
+    //await this.userService.updateUsersRides(exhibitor.session, exhibitor.rides);
 
-    return { error: false, rideId: rideId };
+   // return { error: false, rideId: rideId };
   }
 }
