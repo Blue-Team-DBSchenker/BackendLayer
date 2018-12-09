@@ -18,6 +18,11 @@ export class RegisterCompanyController {
 
     const blockchainClient: any = new BlockchainClient(keys.privateKey);
 
+    await blockchainClient.contract.registerNewCompany(
+      keys.address,
+      ethers.utils.formatBytes32String(companyName)
+    );
+
     const companyID: any = await new Promise(resolve => {
       blockchainClient.contract.once(
         "companyRegistered",
