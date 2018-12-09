@@ -3,6 +3,7 @@ import { RegisterUserDto } from "./register.user.dto";
 import { generateKeysFromCredentials } from "utils/keyPairFromCredentials";
 import { BlockchainClient } from "utils/ethers";
 import { RegisterUserDro } from "./register.user.dro";
+import { ethers } from "ethers";
 
 @Controller("api/v1/users/register")
 export class RegisterUserController {
@@ -13,8 +14,8 @@ export class RegisterUserController {
     @Headers() headers: any,
     @Body() registerUserDto: RegisterUserDto
   ) {
-    const companyPassword: any = headers.password;
-    const companyLogin: any = headers.login;
+    const companyPassword: string = headers.password;
+    const companyLogin: string = headers.login;
 
     // TODO generates the keys
 
@@ -27,8 +28,8 @@ export class RegisterUserController {
 
     blockchainClient.contract.registerNewEmployee(
       registerUserDto.companyID,
-      registerUserDto.login,
-      registerUserDto.password
+      ethers.utils.formatBytes32String(registerUserDto.login),
+      ethers.utils.formatBytes32String(registerUserDto.password)
     );
 
     const IDs: any = await new Promise(resolve => {
