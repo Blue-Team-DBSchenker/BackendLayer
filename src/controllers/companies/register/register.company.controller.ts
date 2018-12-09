@@ -3,8 +3,8 @@ import { RegisterCompanyDto } from "./register.company.dto";
 import { RegisterCompanyDro } from "./register.company.dro";
 
 import { generateKeysFromCredentials } from "../../../utils/keyPairFromCredentials";
-
-import { blockchainClient } from "../../../constants";
+import { BlockchainClient } from "utils/ethers";
+import { ethers } from "ethers";
 
 @Controller("api/v1/companies/register")
 export class RegisterCompanyController {
@@ -16,21 +16,21 @@ export class RegisterCompanyController {
 
     const keys: any = await generateKeysFromCredentials(registerCompanyDto);
 
-    const txReceipt: any = await blockchainClient.contract.methods
-      .registerNewCompany(
-        keys.address,
-        blockchainClient.web3.utils.fromAscii(companyName)
-      )
-      .send({ from: blockchainClient.accounts[0] });
+    const blockchainClient: any = new BlockchainClient(keys.privateKey);
 
-    const companyID: any = txReceipt.events.companyRegistered.returnValues.id;
+    const companyID: any = await new Promise(resolve => {
+      blockchainClient.contract.once(
+        "companyRegistered",
+        (address: any, name: any, id: any) => {
+          resolve(id);
+        }
+      );
+    });
 
-    const response: RegisterCompanyDro = new RegisterCompanyDro(
+    return new RegisterCompanyDro(
       keys.privateKey,
       keys.address,
-      companyID
+      Number(ethers.utils.bigNumberify(companyID))
     );
-
-    return response;
   }
 }
