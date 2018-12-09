@@ -27,8 +27,6 @@
     "haversine": "^1.1.0",
     "js-sha512": "^0.8.0",
     "moment": "^2.22.2",
-    "mongoose": "^5.3.3",
-    "mongoose-sequence": "^4.0.1",
     "node-fetch": "^2.2.0",
     "random-seed": "^0.3.0",
     "randomstring": "^1.1.5",
@@ -36,7 +34,8 @@
     "rxjs": "^6.2.2",
     "sha2": "^1.0.2",
     "sha512": "^0.0.1",
-    "typescript": "^3.0.1"
+    "typescript": "^3.0.1",
+    "web3": "^1.0.0-beta.37"
   },
   "devDependencies": {
     "@nestjs/testing": "^5.1.0",
